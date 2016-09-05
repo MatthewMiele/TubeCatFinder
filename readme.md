@@ -19,3 +19,9 @@ python main.py NUMOFCATS --max_steps
 NUMOFCATS    How many inital cats and owners are lost :( 
 --max_steps  Change how many steps before they get too tired and stop searching (Default: 100,000)
 ```
+
+## Tests ##
+To run the tests simply run
+```
+python -m unittest tests
+```
