@@ -25,3 +25,8 @@ To run the tests simply run
 ```
 python -m unittest tests
 ```
+
+## Todo ##
+- [ ] Make the implimentation use comparison magic methods rather than relying on things being the same reference.
+- [ ] More tests
+- [ ] A really cool visulisation of cats and owners on the move :)
