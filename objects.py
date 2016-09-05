@@ -20,7 +20,6 @@ class Owner():
     def move(self):
         open_connections = get_open_stations(self.station.connections)
         if not open_connections:  # Traped! :(
-            print("{} TRAPPED at {}".format(self, self.station))
             return None
 
         choices = list(set(open_connections) - set(self.visited_stations))
@@ -51,7 +50,6 @@ class Cat():
     def move(self):
         open_connections = get_open_stations(self.station.connections)
         if not open_connections:  # Traped! :(
-            print("{} TRAPPED at {}".format(self, self.station))
             return None
 
         self.station = random.choice(open_connections)

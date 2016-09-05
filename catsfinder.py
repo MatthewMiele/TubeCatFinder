@@ -1,3 +1,4 @@
+import sys
 import random
 from objects import Cat, Owner, Station
 from utils import get_most_visited_stations, get_most_traveled
@@ -29,18 +30,20 @@ def generate_lost_cats(num_of_cats):
 def cat_finder(num_of_cats, max_steps):
     cats, owners, stations = generate_lost_cats(num_of_cats)
     all_owners, all_cats = owners[:], cats[:]
-    cats_found = 0
-    steps_taken = 0
+    steps_taken_to_find_cat = 0
+    step_counter = 0
     trapped_owners = []
     trapped_cats = []
+    found_cats = []
     while owners:
         for owner in owners[:]:
             cat = owner.cat
             if cat.station == owner.station:
                 owners.remove(owner)
                 owner.station.open = False
-                cats_found += 1
-                steps_taken += owner.steps
+                found_cats.append(cat)
+                steps_taken_to_find_cat += owner.steps
+                sys.stdout.write('\r')
                 print("{} found {} - {} is now closed.".format(
                         owner, cat, owner.station
                 ))
@@ -60,10 +63,19 @@ def cat_finder(num_of_cats, max_steps):
                 if max_steps in (owner_steps, cat_steps):
                     owners.remove(owner)
 
-    print("############  Finished ############")
+                if owner_steps is not None:
+                    step_counter = owner_steps
+
+        sys.stdout.write('\r')
+        sys.stdout.write('{} steps taken of maximum {} steps'.format(
+            step_counter, max_steps
+        ))
+
+    print("\r############  Finished ############")
     print("Total number of cats: {}".format(num_of_cats))
-    print("Number of cats found: {}".format(cats_found))
-    avg_steps = steps_taken / cats_found if cats_found else "Infinity"
+    print("Number of cats found: {}".format(len(found_cats)))
+    print('{} steps taken of maximum {} steps'.format(step_counter, max_steps))
+    avg_steps = steps_taken_to_find_cat / len(found_cats) if found_cats else "Infinity"
     print("Average number of movements required to find a cat: {}".format(avg_steps))
 
     most_visited_stations = get_most_visited_stations(stations)
