@@ -27,12 +27,12 @@ def generate_lost_cats(num_of_cats):
 
 
 def cat_finder(num_of_cats, max_steps):
+    cats, owners, stations = generate_lost_cats(num_of_cats)
+    all_owners, all_cats = owners[:], cats[:]
     cats_found = 0
     steps_taken = 0
-    cats, owners, stations = generate_lost_cats(num_of_cats)
-    all_owners = owners[:]
-    all_cats = cats[:]
-    count = 0
+    trapped_owners = []
+    trapped_cats = []
     while owners:
         for owner in owners[:]:
             cat = owner.cat
@@ -51,11 +51,16 @@ def cat_finder(num_of_cats, max_steps):
                 # If either have made max_steps number of moves, they are tired
                 # and cant move anymore. Both cases they are to be removed
                 # from the search
-                if owner_steps in (max_steps, None):
+                if owner_steps is None:
+                    trapped_owners.append(owner)
                     owners.remove(owner)
-                elif cat_steps in (max_steps, None):
+                if cat_steps is None:
+                    trapped_cats.append(owner)
+                    owners.remove(owner)
+                if max_steps in (owner_steps, cat_steps):
                     owners.remove(owner)
 
+    print("############  Finished ############")
     print("Total number of cats: {}".format(num_of_cats))
     print("Number of cats found: {}".format(cats_found))
     avg_steps = steps_taken / cats_found if cats_found else "Infinity"
@@ -74,3 +79,5 @@ def cat_finder(num_of_cats, max_steps):
     print("Most traveld owner: Owners {} visited {} differnt station".format(
         most_travled_owners[0], most_travled_owners[1])
     )
+    print("Trapped cats: {}".format(len(trapped_cats)))
+    print("Trapped owners: {}".format(len(trapped_owners)))
